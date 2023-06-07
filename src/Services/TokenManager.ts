@@ -7,7 +7,7 @@ dotenv.config();
 // essa interface também pode ser alocada para outro arquivo
 export interface TokenPayload {
   user_id: string;
-  user_nickname: string;
+  nickname: string;
   user_role: USER_ROLES;
 }
 

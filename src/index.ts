@@ -3,6 +3,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import userRouter from './Router/userRouter'
+import postRouter from './Router/postsRouter'
 
 const app = express()
 dotenv.config()
@@ -21,3 +22,4 @@ app.listen(Number(process.env.PORT || 3003), () => {
 })
 
 app.use("/users", userRouter);
+app.use("/posts", postRouter);

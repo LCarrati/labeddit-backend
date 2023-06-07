@@ -18,6 +18,10 @@ const userController = new UserController(
 )
 
 userRouter.post("/signup", userController.signup);
-// userRouter.post("/login", userController.login)
+userRouter.post("/login", userController.login);
+userRouter.put("/edituser", userController.editUser);
+userRouter.delete("/deleteuser", userController.deleteUser);
+userRouter.get("/finduser", userController.findUser);
+userRouter.get("/userslist", userController.listAllUsers);
 
 export default userRouter;
