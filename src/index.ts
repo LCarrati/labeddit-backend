@@ -4,6 +4,8 @@ import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import userRouter from './Router/userRouter'
 import postRouter from './Router/postsRouter'
+import { commentRouter } from './Router/commentRouter'
+import likeDislikeRouter from './Router/likesRouter'
 
 const app = express()
 dotenv.config()
@@ -23,3 +25,5 @@ app.listen(Number(process.env.PORT || 3003), () => {
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
+app.use("/comment", commentRouter);
+app.use("/likedislike", likeDislikeRouter);

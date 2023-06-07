@@ -73,5 +73,9 @@ export class PostDatabase extends BaseDatabase {
 		await BaseDatabase.connection(PostDatabase.TABELA_POSTS).decrement('dislikes').where({ post_id })
 	}
 
+	public async addCommentCount(post_id: string): Promise<void> {
+		await BaseDatabase.connection(PostDatabase.TABELA_POSTS).increment('comment').where({ post_id })
+	}
+
 }
 

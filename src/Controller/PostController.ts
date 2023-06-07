@@ -93,7 +93,7 @@ export class PostController {
 				res.status(201).send(output);
 			//get posts by creatorId
 			} else if (input.creator_id) {
-				const output = await this.postBusiness.getPostByCreator(input.creator_id)
+				const output = await this.postBusiness.getPostsByCreator(input.creator_id)
 				res.status(201).send(output);
 			} else {
 				//get all posts

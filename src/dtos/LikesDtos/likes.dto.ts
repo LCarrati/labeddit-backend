@@ -16,3 +16,21 @@ export const likeDislikeSchema = z.object({
     likeDislike: z.number(),
     token: z.string().min(3)
 }).transform(data => data as LikeDislikeInputDTO)
+
+
+
+export interface LikeDislikeCommentInputDTO {
+    comment_id: string,
+    likeDislike: number,
+    token: string
+}
+
+export interface LikeDislikeCommentOutputDTO {
+    message: string,
+}
+
+export const likeDislikeCommentSchema = z.object({
+    comment_id: z.string().min(3),
+    likeDislike: z.number(),
+    token: z.string().min(3)
+}).transform(data => data as LikeDislikeCommentInputDTO)
