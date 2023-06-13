@@ -14,11 +14,13 @@ export class CommentController {
     public addComment = async (req: Request, res: Response): Promise<void> => {
         try {
             const token = req.cookies.lctkn;
+           
 			const input = createCommentSchema.parse({
 				token,
-				content: req.body.content,
+				comment: req.body.content,
                 post_id: req.body.post_id
 			});
+   
 
 			const output = await this.commentBusiness.addComment(input);
 
@@ -63,6 +65,7 @@ export class CommentController {
             const token = req.cookies.lctkn;
             const input = deleteCommentSchema.parse({
                 comment_id: req.body.comment_id,
+                post_id: req.body.post_id,
                 token
             })
             const output = await this.commentBusiness.deleteComment(input);
@@ -106,7 +109,7 @@ export class CommentController {
         try {
             const token = req.cookies.lctkn;
             const input = getAllCommentsSchema.parse({
-                post_id: req.body.post_id,
+                post_id: req.params.post_id,
                 token
             })
             const output = await this.commentBusiness.getAllCommentsFromPost(input);

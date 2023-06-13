@@ -42,19 +42,19 @@ export class CommentBusiness {
         const newComment = new Comment(comment_id, post_id, creator_id, comment);
         const newCommentDB = {
             comment_id: newComment.getId(),
-            post_id: newComment.getId(),
+            post_id: newComment.getPostId(),
             creator_id: newComment.getCreatorId(),
             comment: newComment.getComment(),
             likes: newComment.getLikes(),
             dislikes: newComment.getDislikes(),
         };
-
         await this.commentDatabase.createComment(newCommentDB);
         await this.postDatabase.addCommentCount(post_id);
 
         // const output: any = {
         const output: CreateCommentOutputDTO = {
             message: "Comentário criado com sucesso",
+            comment_id: newCommentDB.comment_id,
             post_id: newCommentDB.post_id,
             comment: newCommentDB.comment,
             created_at: newComment.getCreatedAt(),
@@ -95,7 +95,7 @@ export class CommentBusiness {
 
     // delete a comment
     public async deleteComment(input: DeleteCommentInputDTO): Promise<DeleteCommentOutputDTO> {
-        const { token, comment_id } = input;
+        const { token, comment_id, post_id } = input;
 
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
@@ -114,6 +114,7 @@ export class CommentBusiness {
         }
 
         await this.commentDatabase.deleteComment(comment_id);
+        await this.postDatabase.removeCommentCount(post_id);
 
         const output = {
             message: "Comentário deletado com sucesso"
@@ -174,6 +175,7 @@ export class CommentBusiness {
             const creatorNickname = creator.nickname;
             return {
                 post_id: comment.post_id,
+                comment_id: comment.comment_id,
                 comment: comment.comment,
                 likes: comment.likes,
                 dislikes: comment.dislikes,

@@ -21,5 +21,7 @@ const likesController = new LikesController(
 
 likeDislikeRouter.post("/likedislike", likesController.likedislike)
 likeDislikeRouter.post("/commentlikedislike", likesController.commentLikeDislike)
+likeDislikeRouter.post("/checklikestatus", likesController.checkLikeStatus)
+likeDislikeRouter.post("/checkcommentlikestatus", likesController.checkCommentLikeStatus)
 
-export default likeDislikeRouter
+export default likeDislikeRouter    

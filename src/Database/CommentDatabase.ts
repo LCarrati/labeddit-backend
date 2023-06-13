@@ -19,7 +19,13 @@ export class CommentDatabase extends BaseDatabase {
 
     // create a comment
     public async createComment(newComment: CommentDB): Promise<void> {
-        await CommentDatabase.connection(CommentDatabase.TABELA_COMMENTS).insert(newComment)
+        console.log(newComment)
+        try {
+            
+            await CommentDatabase.connection(CommentDatabase.TABELA_COMMENTS).insert(newComment)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // edit a comment

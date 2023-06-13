@@ -80,13 +80,13 @@ export class PostController {
 
 	public findPosts = async (req: Request, res: Response): Promise<void> => {
 		try {
-            const token = req.cookies.lctkn;
+			const token = req.cookies.lctkn;
             const input = findPostSchema.parse({
-                post_id: req.body.id,
+				post_id: req.body.id || req.params.post_id,
                 creator_id: req.body.creatorId,
                 token
             })
-
+		
             //get post by id
 			if (input.post_id) {
 				const output = await this.postBusiness.getPostById(input.post_id)

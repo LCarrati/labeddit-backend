@@ -12,7 +12,7 @@ export class LikesController {
             const token = req.cookies.lctkn as string;
             const input = likeDislikeSchema.parse({
                 post_id: req.body.post_id,
-                likedislike: req.body.likedislike,
+                likeDislike: req.body.likeDislike,
                 token
             })
             const output = await this.likesBusiness.likeDislike(input);
@@ -33,10 +33,51 @@ export class LikesController {
             const token = req.cookies.lctkn as string;
             const input = likeDislikeCommentSchema.parse({
                 comment_id: req.body.comment_id,
-                likedislike: req.body.likedislike,
+                likedislike: req.body.likeDislike,
                 token
             })
+            console.log(input)
             const output = await this.likesBusiness.commentLikeDislike(input);
+            res.status(200).send(output);
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues[0].message);
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message);
+            } else {
+                res.status(500).send("Erro inesperado");
+            }
+        }
+    }
+
+    public checkLikeStatus = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const token = req.cookies.lctkn as string;
+            const input = {
+                post_id: req.body.post_id,
+                token
+            }
+            const output = await this.likesBusiness.checkLikeStatus(input);
+            res.status(200).send(output);
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues[0].message);
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message);
+            } else {
+                res.status(500).send("Erro inesperado");
+            }
+        }
+    }
+
+    public checkCommentLikeStatus = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const token = req.cookies.lctkn as string;
+            const input = {
+                comment_id: req.body.comment_id,
+                token
+            }
+               const output = await this.likesBusiness.checkCommentLikeStatus(input);
             res.status(200).send(output);
         } catch (error) {
             if (error instanceof ZodError) {

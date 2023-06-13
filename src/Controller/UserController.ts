@@ -142,4 +142,11 @@ export class UserController {
             }
         }
     }
+
+    public logout = async (req: Request, res: Response): Promise<void> => {
+        console.log('cheguei aqui')
+        res.clearCookie("lctkn");
+        res.sendStatus(204)
+        // res.send('logout')
+    }
 }

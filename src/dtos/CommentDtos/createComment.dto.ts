@@ -9,6 +9,7 @@ export interface CreateCommentInputDTO {
 
 export interface CreateCommentOutputDTO {
     message: string,
+    comment_id: string,
     post_id: string,
     comment: string,
     created_at?: string,

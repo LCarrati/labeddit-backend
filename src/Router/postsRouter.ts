@@ -19,7 +19,7 @@ const postController = new PostController(
 postRouter.post("/createpost", postController.createPost)
 postRouter.delete("/deletepost", postController.deletePost)
 postRouter.put("/editpost", postController.editPost)
-postRouter.get("/findpost", postController.findPosts)
+postRouter.get("/findpost/:post_id", postController.findPosts)
 postRouter.get("/postslist", postController.listAllPosts)
 
 export default postRouter;

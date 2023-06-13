@@ -7,9 +7,10 @@ export class PostDatabase extends BaseDatabase {
 	public static TABELA_POSTS = "posts";
 
 	public async findPostById(post_id: string): Promise<PostDB> {
-		const [post] = await BaseDatabase.connection(
-			PostDatabase.TABELA_POSTS
-		).where({ post_id });
+		const [post] = await BaseDatabase.connection(PostDatabase.TABELA_POSTS)
+		.where({ post_id })
+		.join(UserDatabase.TABELA_USUARIOS, 'users.user_id', '=', 'posts.creator_id')
+		.select('posts.post_id', 'posts.creator_id', 'posts.content', 'posts.comments' ,'posts.likes', 'posts.dislikes', 'posts.created_at', 'users.nickname');
 
 		return post;
 	}
@@ -43,8 +44,8 @@ export class PostDatabase extends BaseDatabase {
 	public async findAllPosts(): Promise<PostDB[]> {
 		const posts = await BaseDatabase
 		.connection(PostDatabase.TABELA_POSTS)
-		// .join(UserDatabase.TABELA_USUARIOS, 'users.user_id', '=', 'posts.creator_id')
-		// .select('posts.post_id', 'posts.creator_id', 'posts.content', 'posts.likes', 'posts.dislikes', 'posts.created_at', 'users.nickname')
+		.join(UserDatabase.TABELA_USUARIOS, 'users.user_id', '=', 'posts.creator_id')
+		.select('posts.post_id', 'posts.creator_id', 'posts.content', 'posts.comments' ,'posts.likes', 'posts.dislikes', 'posts.created_at', 'users.nickname')
 		return posts
 	}
 
@@ -74,7 +75,11 @@ export class PostDatabase extends BaseDatabase {
 	}
 
 	public async addCommentCount(post_id: string): Promise<void> {
-		await BaseDatabase.connection(PostDatabase.TABELA_POSTS).increment('comment').where({ post_id })
+		await BaseDatabase.connection(PostDatabase.TABELA_POSTS).increment('comments').where({ post_id })
+	}
+
+	public async removeCommentCount(post_id: string): Promise<void> {
+		await BaseDatabase.connection(PostDatabase.TABELA_POSTS).decrement('comments').where({ post_id })
 	}
 
 }

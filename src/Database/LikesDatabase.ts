@@ -4,7 +4,7 @@ import { BaseDatabase } from "./BaseDatabase";
 
 export class LikesDatabase extends BaseDatabase {
     public static TABELA_LIKES = 'likes_dislikes'
-    public static TABELA_LIKES_COMMENTS = 'likes_dislikes_comments'
+    public static TABELA_LIKES_COMMENTS = 'comment_likes_dislikes'
 
     public async findInteraction(post_id:string, user_id:string): Promise<LikeDislikeDB[]> {
         const interactionExists = await BaseDatabase
@@ -49,45 +49,50 @@ export class LikesDatabase extends BaseDatabase {
         .delete().where({ post_id }).andWhere({ user_id })
     }
 
-    public async findCommentsInteraction(comment_id:string, user_id:string): Promise<LikeDislikeCommentDB[]> {
-        const interactionExists = await BaseDatabase
-        .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
-        .where({ comment_id }).andWhere({ user_id })
+    public async findCommentsInteraction(comment_id:string, user_id:string): Promise<LikeDislikeCommentDB[]> { 
+            const interactionExists = await BaseDatabase
+            .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
+            .where({ comment_id }).andWhere({ user_id })
 
         if (!interactionExists) {
             throw new NotFoundError
         }
-
         return interactionExists
     }
     public async addCommentLike(comment_id:string, userId:string): Promise<void> {
-        const like = {
+          const like = {
             user_id: userId,
             comment_id: comment_id,
-            like: 1
+            likes: 1
         }
-        await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(like)
+        try {
+            
+            await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(like)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     public async addCommentDislike(comment_id:string, userId:string): Promise<void> {
         const dislike = {
             user_id: userId,
             comment_id: comment_id,
-            like: 0
+            likes: 0
         }
         await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(dislike)
     }
 
     public async removeCommentInteraction(comment_id: string, user_id: string): Promise<void> {
         await BaseDatabase
-        .connection(LikesDatabase.TABELA_LIKES)
+        .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
         .delete().where({ comment_id }).andWhere({ user_id })
     }
     
-    public async changeCommentLike(comment_id: string, user_id: string, like: number): Promise<void> {
+    public async changeCommentLike(comment_id: string, user_id: string, likes: number): Promise<void> {
         await BaseDatabase
-        .connection(LikesDatabase.TABELA_LIKES)
+        .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
         .where({ comment_id }).andWhere({ user_id })
-        .update({ like })
+        .update({ likes })
     }
+
 }

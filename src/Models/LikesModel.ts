@@ -7,5 +7,5 @@ export interface LikeDislikeDB {
 export interface LikeDislikeCommentDB {
     comment_id: string,
     user_id: string,
-    like: number
+    likes: number
 }

@@ -18,7 +18,7 @@ export class LikesBusiness {
 
     public likeDislike = async (input: LikeDislikeInputDTO): Promise<LikeDislikeOutputDTO> => {
         const { post_id, likeDislike, token } = input
-
+     
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("'token' inválido")
@@ -156,7 +156,7 @@ export class LikesBusiness {
     }
 
     public commentLikeDislike = async (input: LikeDislikeCommentInputDTO): Promise<LikeDislikeCommentOutputDTO> => {
-        const { comment_id, likeDislike, token } = input
+        const { comment_id, likedislike, token } = input
 
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
@@ -182,9 +182,10 @@ export class LikesBusiness {
         const [interactionExists]: LikeDislikeCommentDB[] = await this.likesDatabase.findCommentsInteraction(comment_id, user_id)
 
         // não teve interação
-        if (!interactionExists) {
+        if (!interactionExists) { 
             // usuário deu like
-            if (likeDislike === 1) {
+            if (likedislike === 1) { 
+                console.log('nao teve interacao, deu like')
                 await this.likesDatabase.addCommentLike(comment_id, user_id)
                 await this.commentDatabase.addLike(comment_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -200,7 +201,8 @@ export class LikesBusiness {
             }
     
             // usuário deu dislike
-            else if (likeDislike === 0) {
+            else if (likedislike === 0) {
+                console.log('nao teve interacao, deu dislike')
                 await this.likesDatabase.addCommentDislike(comment_id, user_id)
                 await this.commentDatabase.addDislike(comment_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -223,9 +225,10 @@ export class LikesBusiness {
 
         // já teve interação 
         else if (interactionExists) {
-            const likeStatus: number = interactionExists?.like
+            const likeStatus: number = interactionExists?.likes
             // usuário deu like mas já tinha dado like
-            if (likeDislike === 1 && likeStatus === 1) {
+            if (likedislike === 1 && likeStatus === 1) {
+                console.log('usuário deu like mas já tinha dado like')
                 await this.commentDatabase.removeLike(comment_id)
                 await this.likesDatabase.removeCommentInteraction(comment_id, user_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -240,8 +243,9 @@ export class LikesBusiness {
                 return output
             }
             // usuário deu like mas já tinha dado dislike
-            else if (likeDislike === 1 && likeStatus === 0) {
-                await this.likesDatabase.changeCommentLike(comment_id, user_id, likeDislike)
+            else if (likedislike === 1 && likeStatus === 0) {
+                console.log('usuário deu like mas já tinha dado dislike')
+                await this.likesDatabase.changeCommentLike(comment_id, user_id, likedislike)
                 await this.commentDatabase.addLike(comment_id)
                 await this.commentDatabase.removeDislike(comment_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -256,8 +260,9 @@ export class LikesBusiness {
                 return output
             }
             // usuário deu dislike mas já tinha dado like
-            else if (likeDislike === 0 && likeStatus === 1) {
-                await this.likesDatabase.changeCommentLike(comment_id, user_id, likeDislike)
+            else if (likedislike === 0 && likeStatus === 1) {
+                console.log('usuário deu dislike mas já tinha dado like')
+                await this.likesDatabase.changeCommentLike(comment_id, user_id, likedislike)
                 await this.commentDatabase.addDislike(comment_id)
                 await this.commentDatabase.removeLike(comment_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -273,6 +278,7 @@ export class LikesBusiness {
             } 
             // usuário deu dislike mas já tinha dado dislike
             else {
+                console.log('usuário deu dislike mas já tinha dado dislike')
                 await this.commentDatabase.removeDislike(comment_id)
                 await this.likesDatabase.removeCommentInteraction(comment_id, user_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -285,6 +291,123 @@ export class LikesBusiness {
                     likesdislikeoutput
                 }
                 return output
+            }
+        }
+
+        else {
+            throw new BadRequestError("Erro ao consultar like/dislike")
+        }
+    }
+
+    public checkLikeStatus = async (input: any) => {
+        const { post_id, token } = input
+     
+        const payload = this.tokenManager.getPayload(token)
+        if (payload === null) {
+            throw new BadRequestError("'token' inválido")
+        }
+        const user_id = payload.user_id as string
+
+        const post = await this.postDatabase.findPostById(post_id);
+        if (!post) {
+            throw new NotFoundError('Post não encontrado')
+        }
+
+        const user = await this.userDatabase.findUserById(user_id)
+        if (!user) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        const [interactionExists]: LikeDislikeDB[] = await this.likesDatabase.findInteraction(post_id, user_id)
+
+        // não teve interação
+        if (!interactionExists) {
+            const output = {
+                like: 0
+            }
+            return output
+        }
+
+        // já teve interação 
+        else if (interactionExists) {
+            const likeStatus: number = interactionExists?.like
+            // usuário deu like mas já tinha dado like
+            if (likeStatus === 1) {
+                const output = {
+                    like: 1
+                }
+                return output
+            }
+            // usuário deu like mas já tinha dado dislike
+            else if (likeStatus === 0) {
+                const output = {
+                    like: -1
+                }
+                return output
+            }
+           
+            // usuário deu dislike mas já tinha dado dislike
+            else {
+                throw new BadRequestError("Erro ao consultar like/dislike")
+            }
+        }
+
+        else {
+            throw new BadRequestError("Erro ao consultar like/dislike")
+        }
+    }
+
+    public checkCommentLikeStatus = async (input: any) => {
+        const { comment_id, token } = input
+     console.log('essa parada')
+        const payload = this.tokenManager.getPayload(token)
+        if (payload === null) {
+            throw new BadRequestError("'token' inválido")
+        }
+        const user_id = payload.user_id as string
+
+        const comment = await this.commentDatabase.findCommentById(comment_id);
+        if (!comment) {
+            throw new NotFoundError('Comentário não encontrado')
+        }
+
+        const user = await this.userDatabase.findUserById(user_id)
+        if (!user) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+        console.log(comment_id, user_id)
+        const [interactionExists]: any[] = await this.likesDatabase.findCommentsInteraction(comment_id, user_id)
+        console.log('cheguei aqui 2')
+        console.log(interactionExists)
+        // não teve interação
+        if (!interactionExists) {
+            const output = {
+                like: 0
+            }
+            return output
+        }
+
+        // já teve interação 
+        else if (interactionExists) {
+            const likeStatus: number = interactionExists?.likes
+            // usuário deu like mas já tinha dado like
+            if (likeStatus === 1) {
+                const output = {
+                    like: 1
+                }
+                return output
+            }
+            // usuário deu like mas já tinha dado dislike
+            else if (likeStatus === 0) {
+                const output = {
+                    like: -1
+                }
+                return output
+            }
+           
+            // usuário deu dislike mas já tinha dado dislike
+            else {
+                throw new BadRequestError("Erro ao consultar like/dislike")
             }
         }
 

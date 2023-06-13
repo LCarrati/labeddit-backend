@@ -46,11 +46,12 @@ CREATE TABLE
         FOREIGN KEY (creator_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
+drop TABLE comment_likes_dislikes ;
 CREATE TABLE
     comment_likes_dislikes (
         user_id TEXT NOT NULL,
         comment_id TEXT NOT NULL,
         likes INTEGER DEFAULT 0,
         FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (comment_id) REFERENCES comment (comment_id) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY (comment_id) REFERENCES comments (comment_id) ON DELETE CASCADE ON UPDATE CASCADE
     );
