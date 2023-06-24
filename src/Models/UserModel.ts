@@ -1,25 +1,20 @@
+
+export enum USER_ROLES {
+    USER = "user",
+    ADMIN = "admin"
+}
+
 export interface UserDB {
     user_id: string,
     nickname: string,
     email: string,
     password: string,
-    role: string
+    role: USER_ROLES
   }
-  
-  export enum USER_ROLES {
-    USER = "user",
-    ADMIN = "admin"
-  }
-  
-  export interface TokenPayload {
-    user_id: string,
-    user_nickname: string,
-    user_role: USER_ROLES
-  }
-  
+
   export class User {
     constructor(
-      private id: string,
+      private user_id: string,
       private nickname: string,
       private email: string,
       private password: string,
@@ -27,7 +22,7 @@ export interface UserDB {
     ) { }
   
     public getId(): string {
-      return this.id;
+      return this.user_id;
     }
   
     public getNickname(): string {
@@ -56,6 +51,5 @@ export interface UserDB {
     }
     public setRole(newRole: USER_ROLES): void {
       this.role = newRole;
-    }
-  
+    }    
   }

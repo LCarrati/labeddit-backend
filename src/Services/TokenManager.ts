@@ -7,7 +7,7 @@ dotenv.config();
 // essa interface também pode ser alocada para outro arquivo
 export interface TokenPayload {
   user_id: string;
-  user_nickname: string;
+  nickname: string;
   user_role: USER_ROLES;
 }
 
@@ -17,7 +17,6 @@ export class TokenManager {
     const token = jwt.sign(payload, process.env.JWT_KEY as string, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
-
     return token;
   };
 
@@ -25,7 +24,6 @@ export class TokenManager {
   public getPayload = (token: string): TokenPayload | null => {
     try {
       const payload = jwt.verify(token, process.env.JWT_KEY as string);
-
       return payload as TokenPayload;
 
       // se a validação falhar, um erro é disparado pelo jsonwebtoken
