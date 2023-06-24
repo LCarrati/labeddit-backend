@@ -8,32 +8,32 @@ import { findCommentSchema, getAllCommentsSchema } from "../dtos/CommentDtos/get
 import { CommentBusiness } from "../Business/CommentBusiness";
 
 export class CommentController {
-	constructor(private commentBusiness: CommentBusiness) { }
+    constructor(private commentBusiness: CommentBusiness) { }
 
     // create a comment
     public addComment = async (req: Request, res: Response): Promise<void> => {
         try {
             const token = req.cookies.lctkn;
-           
-			const input = createCommentSchema.parse({
-				token,
-				comment: req.body.content,
+
+            const input = createCommentSchema.parse({
+                token,
+                comment: req.body.content,
                 post_id: req.body.post_id
-			});
-   
+            });
 
-			const output = await this.commentBusiness.addComment(input);
 
-			res.status(200).send(output);
-		} catch (error) {
-			if (error instanceof ZodError) {
-				res.status(400).send(error.issues[0].message);
-			} else if (error instanceof BaseError) {
-				res.status(error.statusCode).send(error.message);
-			} else {
-				res.status(500).send("Erro inesperado");
-			}
-		}
+            const output = await this.commentBusiness.addComment(input);
+
+            res.status(200).send(output);
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues[0].message);
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message);
+            } else {
+                res.status(500).send("Erro inesperado");
+            }
+        }
     }
 
     // edit a comment

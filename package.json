@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node ./build/index.js",
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "build": "tsc",
+    "start-docker": "node ./build/index.js"
   },
   "author": "",
   "license": "ISC",

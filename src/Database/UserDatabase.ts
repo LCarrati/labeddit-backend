@@ -1,3 +1,4 @@
+import { BadRequestError } from "../Errors/BadRequestError";
 import { NotFoundError } from "../Errors/NotFoundError";
 import { UserDB } from "../Models/UserModel";
 import { BaseDatabase } from "./BaseDatabase";
@@ -8,7 +9,11 @@ export class UserDatabase extends BaseDatabase {
 
     // conect to UserDatabase and create a new user
     public async createUser(newUser: UserDB): Promise<void> {
-        await UserDatabase.connection(UserDatabase.TABELA_USUARIOS).insert(newUser)
+        try {
+            await UserDatabase.connection(UserDatabase.TABELA_USUARIOS).insert(newUser)
+        } catch (error) {
+            throw new BadRequestError
+        }
     }
 
     // conect to UserDatabase and search by id
@@ -43,17 +48,30 @@ export class UserDatabase extends BaseDatabase {
 
     // update/edit user data
     public async editUser(user: UserDB): Promise<void> {
-        await UserDatabase.connection(UserDatabase.TABELA_USUARIOS).update(user).where({ user_id: user.user_id })
+        try {
+            await UserDatabase.connection(UserDatabase.TABELA_USUARIOS).update(user).where({ user_id: user.user_id })
+        } catch (error) {
+            throw new NotFoundError('Usuário não encontrado (ID)')
+        }
     }
 
     // delete user
     public async deleteUser(user_id: string): Promise<void> {
-        await UserDatabase.connection(UserDatabase.TABELA_USUARIOS).delete().where({ user_id })
+        try {
+            await UserDatabase.connection(UserDatabase.TABELA_USUARIOS).delete().where({ user_id })
+        } catch (error) {
+            throw new NotFoundError('Usuário não encontrado (ID)')
+        }
+
     }
 
     // find all users
     public async findAllUsers(): Promise<UserDB[]> {
-        const users = await UserDatabase.connection(UserDatabase.TABELA_USUARIOS)
-        return users
+        try {
+            const users = await UserDatabase.connection(UserDatabase.TABELA_USUARIOS)
+            return users
+        } catch (error) {
+            throw new NotFoundError('Usuários não encontrados')
+        }
     }
 }

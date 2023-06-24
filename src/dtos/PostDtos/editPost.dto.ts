@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface EditPostInputDTO {
     post_id: string,
     content: string,

@@ -44,7 +44,6 @@ export class PostBusiness {
 
         await this.postDatabase.createPost(newPostDB);
 
-        // const output: any = {
         const output: CreatePostOutputDTO = {
             message: "Postagem criada com sucesso",
             post_id: newPostDB.post_id,

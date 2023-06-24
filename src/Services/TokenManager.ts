@@ -17,7 +17,6 @@ export class TokenManager {
     const token = jwt.sign(payload, process.env.JWT_KEY as string, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
-
     return token;
   };
 
@@ -25,7 +24,6 @@ export class TokenManager {
   public getPayload = (token: string): TokenPayload | null => {
     try {
       const payload = jwt.verify(token, process.env.JWT_KEY as string);
-
       return payload as TokenPayload;
 
       // se a validação falhar, um erro é disparado pelo jsonwebtoken

@@ -36,7 +36,6 @@ export class LikesController {
                 likedislike: req.body.likeDislike,
                 token
             })
-            console.log(input)
             const output = await this.likesBusiness.commentLikeDislike(input);
             res.status(200).send(output);
         } catch (error) {
@@ -77,7 +76,7 @@ export class LikesController {
                 comment_id: req.body.comment_id,
                 token
             }
-               const output = await this.likesBusiness.checkCommentLikeStatus(input);
+            const output = await this.likesBusiness.checkCommentLikeStatus(input);
             res.status(200).send(output);
         } catch (error) {
             if (error instanceof ZodError) {

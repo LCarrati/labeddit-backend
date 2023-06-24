@@ -10,15 +10,15 @@ import { LikeDislikeCommentInputDTO, LikeDislikeCommentOutputDTO, LikeDislikeInp
 
 export class LikesBusiness {
     constructor(
-        private likesDatabase: LikesDatabase, 
+        private likesDatabase: LikesDatabase,
         private commentDatabase: CommentDatabase,
         private postDatabase: PostDatabase,
         private userDatabase: UserDatabase,
-        private tokenManager: TokenManager) {}
+        private tokenManager: TokenManager) { }
 
     public likeDislike = async (input: LikeDislikeInputDTO): Promise<LikeDislikeOutputDTO> => {
         const { post_id, likeDislike, token } = input
-     
+
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("'token' inválido")
@@ -35,11 +35,6 @@ export class LikesBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        // type likeDislikeDB = {
-        //     post_id: string,
-        //     user_id: string,
-        //     like: number
-        // }
         const [interactionExists]: LikeDislikeDB[] = await this.likesDatabase.findInteraction(post_id, user_id)
 
         // não teve interação
@@ -59,7 +54,7 @@ export class LikesBusiness {
                 }
                 return output
             }
-    
+
             // usuário deu dislike
             else if (likeDislike === 0) {
                 await this.likesDatabase.addDislike(post_id, user_id)
@@ -131,7 +126,7 @@ export class LikesBusiness {
                     likesdislikeoutput
                 }
                 return output
-            } 
+            }
             // usuário deu dislike mas já tinha dado dislike
             else {
                 await this.postDatabase.removeDislike(post_id)
@@ -174,18 +169,13 @@ export class LikesBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        // type likeDislikeCommentDB = {
-        //     comment_id: string,
-        //     user_id: string,
-        //     like: number
-        // }
         const [interactionExists]: LikeDislikeCommentDB[] = await this.likesDatabase.findCommentsInteraction(comment_id, user_id)
 
         // não teve interação
-        if (!interactionExists) { 
+        if (!interactionExists) {
             // usuário deu like
-            if (likedislike === 1) { 
-                console.log('nao teve interacao, deu like')
+            if (likedislike === 1) {
+                // console.log('nao teve interacao, deu like')
                 await this.likesDatabase.addCommentLike(comment_id, user_id)
                 await this.commentDatabase.addLike(comment_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -199,10 +189,10 @@ export class LikesBusiness {
                 }
                 return output
             }
-    
+
             // usuário deu dislike
             else if (likedislike === 0) {
-                console.log('nao teve interacao, deu dislike')
+                // console.log('nao teve interacao, deu dislike')
                 await this.likesDatabase.addCommentDislike(comment_id, user_id)
                 await this.commentDatabase.addDislike(comment_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -228,7 +218,7 @@ export class LikesBusiness {
             const likeStatus: number = interactionExists?.likes
             // usuário deu like mas já tinha dado like
             if (likedislike === 1 && likeStatus === 1) {
-                console.log('usuário deu like mas já tinha dado like')
+                // console.log('usuário deu like mas já tinha dado like')
                 await this.commentDatabase.removeLike(comment_id)
                 await this.likesDatabase.removeCommentInteraction(comment_id, user_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -244,7 +234,7 @@ export class LikesBusiness {
             }
             // usuário deu like mas já tinha dado dislike
             else if (likedislike === 1 && likeStatus === 0) {
-                console.log('usuário deu like mas já tinha dado dislike')
+                // console.log('usuário deu like mas já tinha dado dislike')
                 await this.likesDatabase.changeCommentLike(comment_id, user_id, likedislike)
                 await this.commentDatabase.addLike(comment_id)
                 await this.commentDatabase.removeDislike(comment_id)
@@ -261,7 +251,7 @@ export class LikesBusiness {
             }
             // usuário deu dislike mas já tinha dado like
             else if (likedislike === 0 && likeStatus === 1) {
-                console.log('usuário deu dislike mas já tinha dado like')
+                // console.log('usuário deu dislike mas já tinha dado like')
                 await this.likesDatabase.changeCommentLike(comment_id, user_id, likedislike)
                 await this.commentDatabase.addDislike(comment_id)
                 await this.commentDatabase.removeLike(comment_id)
@@ -275,10 +265,10 @@ export class LikesBusiness {
                     likesdislikeoutput
                 }
                 return output
-            } 
+            }
             // usuário deu dislike mas já tinha dado dislike
             else {
-                console.log('usuário deu dislike mas já tinha dado dislike')
+                // console.log('usuário deu dislike mas já tinha dado dislike')
                 await this.commentDatabase.removeDislike(comment_id)
                 await this.likesDatabase.removeCommentInteraction(comment_id, user_id)
                 const likesdislikes = await this.commentDatabase.findCommentById(comment_id)
@@ -301,7 +291,7 @@ export class LikesBusiness {
 
     public checkLikeStatus = async (input: any) => {
         const { post_id, token } = input
-     
+
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("'token' inválido")
@@ -345,7 +335,7 @@ export class LikesBusiness {
                 }
                 return output
             }
-           
+
             // usuário deu dislike mas já tinha dado dislike
             else {
                 throw new BadRequestError("Erro ao consultar like/dislike")
@@ -359,7 +349,6 @@ export class LikesBusiness {
 
     public checkCommentLikeStatus = async (input: any) => {
         const { comment_id, token } = input
-     console.log('essa parada')
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("'token' inválido")
@@ -375,10 +364,9 @@ export class LikesBusiness {
         if (!user) {
             throw new NotFoundError('Usuário não encontrado')
         }
-        console.log(comment_id, user_id)
+
         const [interactionExists]: any[] = await this.likesDatabase.findCommentsInteraction(comment_id, user_id)
-        console.log('cheguei aqui 2')
-        console.log(interactionExists)
+
         // não teve interação
         if (!interactionExists) {
             const output = {
@@ -404,7 +392,7 @@ export class LikesBusiness {
                 }
                 return output
             }
-           
+
             // usuário deu dislike mas já tinha dado dislike
             else {
                 throw new BadRequestError("Erro ao consultar like/dislike")

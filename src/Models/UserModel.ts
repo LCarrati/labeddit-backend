@@ -51,7 +51,5 @@ export interface UserDB {
     }
     public setRole(newRole: USER_ROLES): void {
       this.role = newRole;
-    }
-  
-    
+    }    
   }

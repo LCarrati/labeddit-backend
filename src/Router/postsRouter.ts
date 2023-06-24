@@ -1,5 +1,4 @@
 import express from "express";
-
 import { IdGenerator } from "../Services/IdGenerator";
 import { TokenManager } from "../Services/TokenManager";
 import { PostController } from "../Controller/PostController";

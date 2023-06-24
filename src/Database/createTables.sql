@@ -1,3 +1,6 @@
+    -- no PostgreSQL substituir "TEXT DEFAULT (DATETIME('now', 'localtime'))" por "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    -- no PostgreSQL like é uma palavra reservada, então substituir "like integer DEFAULT 0" por  "like" integer DEFAULT 0
+    
 -- Active: 1686059479208@@127.0.0.1@3306
 CREATE TABLE
     users (

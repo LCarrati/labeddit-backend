@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface DeletePostInputDTO {
     post_id: string,
     token: string

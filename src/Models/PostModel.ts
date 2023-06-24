@@ -9,10 +9,6 @@ export interface PostDB {
     created_at?:string,
     updated_at?:string
 }
-// export interface PostDB {
-//     creator_Id: string,
-//     content: string
-// }
 
 export class Post {
   constructor(

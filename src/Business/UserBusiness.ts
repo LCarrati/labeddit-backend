@@ -118,11 +118,11 @@ export class UserBusiness {
         if (!userExist) {
             throw new NotFoundError("Usuário não encontrado")
         }
-        const user = new User (
-            userExist.user_id, 
-            userExist.nickname, 
-            userExist.email, 
-            userExist.password, 
+        const user = new User(
+            userExist.user_id,
+            userExist.nickname,
+            userExist.email,
+            userExist.password,
             userExist.role
         )
 
@@ -137,16 +137,16 @@ export class UserBusiness {
             user.setNickname(newnickname)
         }
 
-        if(password){
+        if (password) {
             const hashedPassword = await this.hashManager.hash(password)
             user.setPassword(hashedPassword)
         }
 
-        if(role){
+        if (role) {
             user.setRole(role)
         }
 
-        if(email){
+        if (email) {
             user.setEmail(email)
         }
 
@@ -184,11 +184,11 @@ export class UserBusiness {
             throw new BadRequestError("'token' inválido")
         }
 
-        const user = new User (
-            userExist.user_id, 
-            userExist.nickname, 
-            userExist.email, 
-            userExist.password, 
+        const user = new User(
+            userExist.user_id,
+            userExist.nickname,
+            userExist.email,
+            userExist.password,
             userExist.role
         )
 

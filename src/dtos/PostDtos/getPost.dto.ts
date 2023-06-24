@@ -1,7 +1,6 @@
 import z from "zod"
 import { PostDB } from "../../Models/PostModel"
 
-
 export interface FindPostInputDTO {
     post_id?: string,
     creator_id?: string,

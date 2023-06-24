@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface CreateCommentInputDTO {
     token: string,
     comment: string,

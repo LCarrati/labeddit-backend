@@ -65,7 +65,7 @@ export class CommentBusiness {
     }
 
     // edit a comment
-    public async editComment(input:EditCommentInputDTO): Promise<EditCommentOutputDTO> {
+    public async editComment(input: EditCommentInputDTO): Promise<EditCommentOutputDTO> {
         const { token, comment_id, newContent } = input;
 
         const payload = this.tokenManager.getPayload(token)

@@ -15,12 +15,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({
-  // origin: true,
-  origin: 'http://localhost:5173',
+  origin: 'https://labeddit-frontend-lcarrati.vercel.app', 
   credentials: true, // permite enviar cookies e autenticação
   exposedHeaders: ["set-cookie"],
 }));
-
 
 app.use(express.json())
 
@@ -29,10 +27,7 @@ app.listen(Number(process.env.PORT || 3003), () => {
 })
 
 app.use(cookieParser());
-app.use("/users", userRouter);
-app.use("/posts", postRouter);
-app.use("/comment", commentRouter);
-app.use("/likedislike", likeDislikeRouter);
-
-
-
+app.use("/labeddit-backend/users", userRouter);
+app.use("/labeddit-backend/posts", postRouter);
+app.use("/labeddit-backend/comment", commentRouter);
+app.use("/labeddit-backend/likedislike", likeDislikeRouter);

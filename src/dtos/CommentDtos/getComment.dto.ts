@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface FindCommentInputDTO {
     comment_id: string,
     token: string,

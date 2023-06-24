@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface LikeDislikeInputDTO {
     post_id: string,
     likeDislike: number,

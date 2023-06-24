@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface DeleteCommentInputDTO {
     comment_id: string,
     post_id: string

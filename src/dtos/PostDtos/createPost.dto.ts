@@ -1,6 +1,5 @@
 import z from "zod"
 
-
 export interface CreatePostInputDTO {
     token: string,
     content: string
