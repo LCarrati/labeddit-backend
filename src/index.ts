@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import userRouter from './Router/userRouter'
 import postRouter from './Router/postsRouter'
 import { commentRouter } from './Router/commentRouter'
@@ -9,7 +9,7 @@ import likeDislikeRouter from './Router/likesRouter'
 import cookieParser from 'cookie-parser'
 
 const app = express()
-dotenv.config()
+// dotenv.config()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

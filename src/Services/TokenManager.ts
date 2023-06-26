@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { USER_ROLES } from "../Models/UserModel";
 
-dotenv.config();
+// dotenv.config();
 
 // essa interface também pode ser alocada para outro arquivo
 export interface TokenPayload {

@@ -9,8 +9,8 @@ CREATE TABLE
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         role TEXT NOT NULL,
-        created_at TEXT DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT DEFAULT (DATETIME('now', 'localtime'))
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
 CREATE TABLE
@@ -21,8 +21,8 @@ CREATE TABLE
         likes INTEGER DEFAULT 0,
         dislikes INTEGER DEFAULT 0,
         comments INTEGER DEFAULT 0,
-        created_at TEXT DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT DEFAULT (DATETIME('now', 'localtime')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (creator_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
@@ -30,7 +30,7 @@ CREATE TABLE
     likes_dislikes (
         user_id TEXT NOT NULL,
         post_id TEXT NOT NULL,
-        like integer DEFAULT 0,
+        "like" integer DEFAULT 0,
         FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE ON UPDATE CASCADE
     );
@@ -43,8 +43,8 @@ CREATE TABLE
         comment TEXT NOT NULL,
         likes INTEGER DEFAULT 0,
         dislikes INTEGER DEFAULT 0,
-        created_at TEXT DEFAULT (DATETIME('now', 'localtime')),
-        updated_at TEXT DEFAULT (DATETIME('now', 'localtime')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (creator_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
     );
