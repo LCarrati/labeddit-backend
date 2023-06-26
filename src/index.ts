@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({
-  origin: 'https://labeddit-frontend-lcarrati.vercel.app', 
+  origin: 'https://localhost/', 
+  // origin: 'https://labeddit-frontend-lcarrati.vercel.app', 
   credentials: true, // permite enviar cookies e autenticação
   exposedHeaders: ["set-cookie"],
 }));

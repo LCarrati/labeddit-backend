@@ -25,11 +25,7 @@ export class LikesDatabase extends BaseDatabase {
             post_id: postId,
             like: 1
         }
-        try {
-            await BaseDatabase.connection(LikesDatabase.TABELA_LIKES).insert(like)
-        } catch (error) {
-            throw new BadRequestError('Erro ao adicionar like')
-        }
+        await BaseDatabase.connection(LikesDatabase.TABELA_LIKES).insert(like)
     }
 
     public async addDislike(postId: string, userId: string): Promise<void> {
@@ -38,32 +34,20 @@ export class LikesDatabase extends BaseDatabase {
             post_id: postId,
             like: 0
         }
-        try {
-            await BaseDatabase.connection(LikesDatabase.TABELA_LIKES).insert(dislike)
-        } catch (error) {
-            throw new BadRequestError('Erro ao adicionar dislike')
-        }
+        await BaseDatabase.connection(LikesDatabase.TABELA_LIKES).insert(dislike)
     }
 
     public async changeLike(post_id: string, user_id: string, like: number): Promise<void> {
-        try {
-            await BaseDatabase
-                .connection(LikesDatabase.TABELA_LIKES)
-                .where({ post_id }).andWhere({ user_id })
-                .update({ like })
-        } catch (error) {
-            throw new BadRequestError('Erro ao modificar like')
-        }
+        await BaseDatabase
+            .connection(LikesDatabase.TABELA_LIKES)
+            .where({ post_id }).andWhere({ user_id })
+            .update({ like })
     }
 
     public async remove(post_id: string, user_id: string): Promise<void> {
-        try {
-            await BaseDatabase
-                .connection(LikesDatabase.TABELA_LIKES)
-                .delete().where({ post_id }).andWhere({ user_id })
-        } catch (error) {
-            throw new BadRequestError('Erro ao remover like')
-        }
+        await BaseDatabase
+            .connection(LikesDatabase.TABELA_LIKES)
+            .delete().where({ post_id }).andWhere({ user_id })
     }
 
     public async findCommentsInteraction(comment_id: string, user_id: string): Promise<LikeDislikeCommentDB[]> {
@@ -82,11 +66,7 @@ export class LikesDatabase extends BaseDatabase {
             comment_id: comment_id,
             likes: 1
         }
-        try {
-            await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(like)
-        } catch (error) {
-            throw new BadRequestError('Erro ao adicionar like')
-        }
+        await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(like)
     }
 
     public async addCommentDislike(comment_id: string, userId: string): Promise<void> {
@@ -95,32 +75,20 @@ export class LikesDatabase extends BaseDatabase {
             comment_id: comment_id,
             likes: 0
         }
-        try {
-            await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(dislike)
-        } catch (error) {
-            throw new BadRequestError('Erro ao adicionar dislike')
-        }
+        await BaseDatabase.connection(LikesDatabase.TABELA_LIKES_COMMENTS).insert(dislike)
     }
 
     public async removeCommentInteraction(comment_id: string, user_id: string): Promise<void> {
-        try {
-            await BaseDatabase
-                .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
-                .delete().where({ comment_id }).andWhere({ user_id })
-        } catch (error) {
-            throw new BadRequestError('Erro ao remover interação')
-        }
+        await BaseDatabase
+            .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
+            .delete().where({ comment_id }).andWhere({ user_id })
     }
 
     public async changeCommentLike(comment_id: string, user_id: string, likes: number): Promise<void> {
-        try {
-            await BaseDatabase
-                .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
-                .where({ comment_id }).andWhere({ user_id })
-                .update({ likes })
-        } catch (error) {
-            throw new BadRequestError('Erro ao atualizar likes')
-        }
+        await BaseDatabase
+            .connection(LikesDatabase.TABELA_LIKES_COMMENTS)
+            .where({ comment_id }).andWhere({ user_id })
+            .update({ likes })
     }
 
 }

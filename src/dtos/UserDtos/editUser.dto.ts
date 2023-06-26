@@ -16,7 +16,7 @@ export interface EditUserOutputDTO {
 
 export const editUserSchema = z.object({
     nickname: z.string().min(3),
-    newnickname: z.string().min(3),
+    newnickname: z.string().min(3).optional(),
     email: z.string().email().optional(),
     password: z.string().min(3).optional(),
     role: z.nativeEnum(USER_ROLES).optional(),
