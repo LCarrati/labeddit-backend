@@ -56,3 +56,11 @@ Comente o código referente ao PostgreSQL e descomente o código referente ao SQ
 &nbsp;
 
 Acesse a aplicação em http://localhost:3003
+
+&nbsp;
+# Alternativa
+
+Existe neste repositório uma branch chamada "deploy-local" onde já está tudo configurado para o deploy local. Entrando nessa branch basta executar: 
+    
+    NPM RUN DEV 
+
